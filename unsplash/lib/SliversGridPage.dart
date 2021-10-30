@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unsplash/Model/UnsplashImage.dart';
+import 'package:unsplash/PhotoDetailPage.dart';
 import 'package:unsplash/Services/Services.dart';
 
 import 'CardWidget.dart';
@@ -46,10 +47,26 @@ class _SliversGridPageState extends State<SliversGridPage> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return Image.network(
-                      listImages![index].urls.small,
-                      height: 100.0,
-                      fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () {
+                        print("image_$index");
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => PhotoDetailPage(
+                                index: index,
+                                url: listImages![index].urls.small),
+                          ),
+                        );
+                      },
+                      child: Hero(
+                        transitionOnUserGestures: true,
+                        tag: "image_$index",
+                        child: Image.network(
+                          listImages![index].urls.small,
+                          height: 100.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     );
                   },
                   childCount: isLoading ? 0 : listImages!.length,
